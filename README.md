@@ -18,5 +18,5 @@ $python3 main.py
 Camera can be controller with given keyboard keys:
 
 - *W*, *A*, *S*, *D* - rotation
-- &uarr; &larr; &darr; &rarr; - position
+- &uarr;, &larr;, &darr;, &rarr; - position
 - *Q*, *E* - zoom
