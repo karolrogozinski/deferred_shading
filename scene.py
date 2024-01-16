@@ -1,5 +1,5 @@
-from config import INIT_POS, INIT_ROT, OBJECTS
-from objects import Cube, Floor, Cone, Sphere
+from config import INIT_POS, INIT_ROT, OBJECTS, LIGHTS
+from objects import Cube, Floor, Cone, Sphere, Light
 
 
 class Scene:
@@ -10,6 +10,7 @@ class Scene:
         self.camera_rotation = INIT_ROT
 
         self.create_objects()
+        self.create_lights()
 
     def add_light(self, light) -> None:
         self.lights.append(light)
@@ -31,6 +32,13 @@ class Scene:
             sphere_ = Sphere(sphere[0], sphere[1], sphere[2])
             self.objects.append(sphere_)
 
+    def create_lights(self) -> None:
+        for light_name, light_params in LIGHTS.items():
+            light = Light(light_name, light_params[0], light_params[1])
+            self.lights.append(light)
+
     def render(self) -> None:
         for obj in self.objects:
             obj.draw()
+        for light in self.lights:
+            light.activate()

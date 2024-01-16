@@ -1,7 +1,9 @@
 from math import pi, sin, cos
 
 from OpenGL.GL import glBegin, glColor3f, GL_QUADS, glVertex3f, glEnd, \
-    GL_TRIANGLES
+    GL_TRIANGLES, glEnable, glLightfv, GL_LIGHT0, GL_POSITION, GL_DIFFUSE, \
+    GL_SPECULAR, GL_LIGHTING
+from OpenGL import GL
 
 
 class Object:
@@ -159,3 +161,29 @@ class Sphere(Object):
                 glVertex3f(x4, y4, z4)
 
         glEnd()
+
+class Light(Object):
+    LIGHT_CONSTANTS = {
+        'LIGHT0': GL.GL_LIGHT0,
+        'LIGHT1': GL.GL_LIGHT1,
+        'LIGHT2': GL.GL_LIGHT2,
+        'LIGHT3': GL.GL_LIGHT3,
+        'LIGHT4': GL.GL_LIGHT4,
+        'LIGHT5': GL.GL_LIGHT5,
+        'LIGHT6': GL.GL_LIGHT6,
+        'LIGHT7': GL.GL_LIGHT7
+    }
+
+    def __init__(self, name, color, position):
+        super().__init__(position, color)
+        self.name = name
+
+    def activate(self):
+        glEnable(GL_LIGHTING)
+        glEnable(self.LIGHT_CONSTANTS[self.name])
+        glLightfv(self.LIGHT_CONSTANTS[self.name], GL_POSITION, \
+                    (*self.position, 1.0))
+        glLightfv(self.LIGHT_CONSTANTS[self.name], GL_DIFFUSE, \
+                    (*self.color, 1.0))
+        glLightfv(self.LIGHT_CONSTANTS[self.name], GL_SPECULAR, \
+                    (*self.color, 1.0))
