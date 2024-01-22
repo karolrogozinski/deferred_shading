@@ -24,6 +24,7 @@ void main()
     gPosition = fragmentPos;
     gAlbedoSpecular.rgb = texture(material.albedo, fragmentTexCoord).rgb;
     gAlbedoSpecular.a = texture(material.specular, fragmentTexCoord).r;
-    gNormalAo.rgb = TBN * normalize(2.0 * texture(material.normal, fragmentTexCoord).rgb - vec3(1.0));
+    vec3 normal = normalize(TBN * (2.0 * texture(material.normal, fragmentTexCoord).rgb - vec3(1.0)));
+    gNormalAo.rgb = (normal + vec3(1.0)) / 2;
     gNormalAo.a = texture(material.ao, fragmentTexCoord).r;
 }
