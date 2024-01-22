@@ -1,40 +1,26 @@
-import pygame
-from pygame.locals import K_UP, K_DOWN, K_LEFT, K_RIGHT, \
-        K_w, K_s, K_a, K_d, K_q, K_e
-
-from scene import Scene
-from config import MOVE_SPEED, ROTATION_SPEED, ZOOM_SPEED
+import numpy as np
 
 
-def handle_input(scene: Scene) -> None:
-    """
-    Handling keyboard input.
-    Currently only used for managing camera.
-    """
-    keys = pygame.key.get_pressed()
+class Camera:
 
-    # Move
-    if keys[K_UP]:
-        scene.camera_position[1] -= MOVE_SPEED
-    if keys[K_DOWN]:
-        scene.camera_position[1] += MOVE_SPEED
-    if keys[K_LEFT]:
-        scene.camera_position[0] += MOVE_SPEED
-    if keys[K_RIGHT]:
-        scene.camera_position[0] -= MOVE_SPEED
+    def __init__(self, position, eulers):
+        self.position = np.array(position,dtype=np.float32)
+        self.eulers = np.array(eulers,dtype=np.float32)
+        self.global_up = np.array([0, 0, 1], dtype=np.float32)
 
-    # Rotate
-    if keys[K_w]:
-        scene.camera_rotation[0] += ROTATION_SPEED
-    if keys[K_s]:
-        scene.camera_rotation[0] -= ROTATION_SPEED
-    if keys[K_a]:
-        scene.camera_rotation[1] += ROTATION_SPEED
-    if keys[K_d]:
-        scene.camera_rotation[1] -= ROTATION_SPEED
+    def calculate_forward(self):
+        target = + np.array(
+            [
+                np.cos(np.radians(self.eulers[1]),dtype=np.float32) * np.cos(np.radians(self.eulers[0]),dtype=np.float32),
+                np.sin(np.radians(self.eulers[1]),dtype=np.float32) * np.cos(np.radians(self.eulers[0]),dtype=np.float32),
+                np.sin(np.radians(self.eulers[0]),dtype=np.float32)], 
+                dtype = np.float32)
 
-    # Zoom
-    if keys[K_q]:
-        scene.camera_position[2] += ZOOM_SPEED
-    if keys[K_e]:
-        scene.camera_position[2] -= ZOOM_SPEED
+        return target
+
+    
+    def calculate_up(self):
+        forward = self.calculate_forward()
+        up = np.cross(a = np.cross(a = forward,b = self.global_up),b = forward,)
+        
+        return up

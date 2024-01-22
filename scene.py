@@ -1,44 +1,15 @@
-from config import INIT_POS, INIT_ROT, OBJECTS, LIGHTS
-from objects import Cube, Floor, Cone, Sphere, Light
-
+from config import GROUND, CUBES, SPHERES, CONES, LIGHTS
+from utils import Camera
+from objects import Object, Light
+import random
 
 class Scene:
-    def __init__(self: None) -> None:
-        self.objects = []
-        self.lights = []
-        self.camera_position = INIT_POS
-        self.camera_rotation = INIT_ROT
 
-        self.create_objects()
-        self.create_lights()
-
-    def add_light(self, light) -> None:
-        self.lights.append(light)
-
-    def create_objects(self) -> None:
-        for cube in OBJECTS['CUBES']:
-            cube_ = Cube(cube[0], cube[1], cube[2])
-            self.objects.append(cube_)
-
-        for floor in OBJECTS['FLOOR']:
-            flore_ = Floor(floor[0], floor[1], floor[2])
-            self.objects.append(flore_)
-
-        for cone in OBJECTS['CONES']:
-            cone_ = Cone(cone[0], cone[1], cone[2], cone[3])
-            self.objects.append(cone_)
-
-        for sphere in OBJECTS['SPHERES']:
-            sphere_ = Sphere(sphere[0], sphere[1], sphere[2])
-            self.objects.append(sphere_)
-
-    def create_lights(self) -> None:
-        for light_name, light_params in LIGHTS.items():
-            light = Light(light_name, light_params[0], light_params[1])
-            self.lights.append(light)
-
-    def render(self) -> None:
-        for obj in self.objects:
-            obj.draw()
-        for light in self.lights:
-            light.activate()
+    def __init__(self):
+        self.ground = [Object(GROUND)]
+        self.cubes = [Object(position = CUBES[i]) for i in range(len(CUBES))]
+        self.spheres = [Object(position = SPHERES[i]) for i in range(len(SPHERES))]
+        self.cones = [Object(position = CONES[i]) for i in range(len(CONES))]
+        self.objects_count = len(self.cubes) + len(self.cones) + len(self.spheres)
+        self.lights = [Light(position = LIGHTS[i], strength = 2 ,color = [random.uniform(a = 0.5, b = 1) for x in range(3)]) for i in range(len(LIGHTS))]
+        self.camera = Camera(position = [-10, 0, 0],eulers = [0, 0, 0])
