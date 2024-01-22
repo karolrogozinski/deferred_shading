@@ -40,7 +40,7 @@ void main()
     vec3 lightLevel = vec3(0.0);
     vec4 normalAo = texture(fragment.normalAo, fragmentTexCoord);
     vec3 fragmentPos = texture(fragment.position, fragmentTexCoord).xyz;
-    vec3 fragmentNormal = normalAo.rgb;
+    vec3 fragmentNormal = (2.0 * normalAo.rgb - vec3(1.0));
     float ao = normalAo.a;
     
     lightLevel += ambient * texture(fragment.gAlbedoSpecular, fragmentTexCoord).rgb;
