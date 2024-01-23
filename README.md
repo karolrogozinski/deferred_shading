@@ -5,12 +5,15 @@
 ```
 python 3.9+
 OpenGL
+numpy
+pygame
+pyrr
 ```
 
 ## Run
 
 ```
-$python3 main.py
+$python3 app.py
 ```
 
 ## Controls
