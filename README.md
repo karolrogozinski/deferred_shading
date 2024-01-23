@@ -15,6 +15,7 @@ pyrr
 ```
 $python3 app.py
 ```
+Display changes can be made by uncommenting lines 52-62 in shaders/l_fragment.txt file.
 
 ## Controls
 
